@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Train Reservation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; min-height: 100vh; display: flex; flex-direction: column; }
+
+        /* Navbar — same as home, without logout */
+        .navbar { background-color: #0056b3; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+
+        .page-wrap { flex: 1; display: flex; justify-content: center; align-items: center; padding: 40px 20px; }
+
+        .form-card {
+            background: white;
+            padding: 36px 32px;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 6px 16px rgba(0,0,0,0.06);
+            width: 100%;
+            max-width: 420px;
+        }
+        h2 { text-align: center; color: #1a1a2e; font-size: 22px; font-weight: 600; margin: 0 0 6px 0; }
+        .subtitle { text-align: center; color: #888; font-size: 14px; margin-bottom: 28px; }
+
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; margin-bottom: 6px; color: #555; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; }
+        .form-group input {
+            width: 100%; padding: 10px 14px; border: 1.5px solid #dde1e7; border-radius: 8px; font-size: 15px;
+            font-family: 'Inter', sans-serif; transition: border-color 0.2s, box-shadow 0.2s; outline: none; color: #333;
+        }
+        .form-group input:focus { border-color: #0056b3; box-shadow: 0 0 0 3px rgba(0,86,179,0.1); }
+
+        button {
+            width: 100%; padding: 12px; background-color: #0056b3; color: white; border: none;
+            border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 6px;
+            font-family: 'Inter', sans-serif; transition: background-color 0.2s;
+        }
+        button:hover { background-color: #004494; }
+
+        .footer-text { text-align: center; margin-top: 20px; font-size: 14px; color: #666; }
+        .footer-text a { color: #0056b3; text-decoration: none; font-weight: 500; }
+        .footer-text a:hover { text-decoration: underline; }
+
+        .error-message {
+            color: #842029; background-color: #f8d7da; border: 1px solid #f5c2c7;
+            padding: 12px 16px; border-radius: 8px; margin-bottom: 20px; text-align: center;
+            font-size: 14px; font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <h1>Train Reservation System</h1>
+</div>
+
+<div class="page-wrap">
+    <div class="form-card">
+        <h2>Welcome Back</h2>
+        <div class="subtitle">Sign in to your account</div>
+
+        {{#error}}
+            <div class="error-message">
+                {{error}}
+            </div>
+        {{/error}}
+
+        <form action="/login" method="post">
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="johndoe" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;" required>
+            </div>
+
+            <button type="submit">Log In</button>
+        </form>
+
+        <div class="footer-text">
+            Don't have an account? <a href="/">Sign up here</a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Ticket - Train Reservation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; }
+
+        /* Navbar */
+        .navbar { background-color: #0056b3; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+        .back-btn { color: white; text-decoration: none; font-weight: 500; font-size: 14px; background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 6px; transition: background 0.2s; }
+        .back-btn:hover { background: rgba(255,255,255,0.25); }
+
+        /* Main Container */
+        .container {
+            max-width: 520px; margin: 50px auto; padding: 36px 32px; background: white;
+            border-radius: 12px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 6px 16px rgba(0,0,0,0.06);
+        }
+        .container h2 { margin: 0 0 8px 0; color: #1a1a2e; text-align: center; font-size: 22px; font-weight: 600; }
+        .container .subtitle { text-align: center; color: #888; font-size: 14px; margin-bottom: 28px; }
+
+        .form-group { margin-bottom: 22px; }
+        .form-group label { display: block; margin-bottom: 6px; color: #555; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 11px 14px; border: 1.5px solid #dde1e7; border-radius: 8px;
+            font-size: 15px; font-family: 'Inter', sans-serif; transition: border-color 0.2s, box-shadow 0.2s;
+            outline: none; color: #333; background: white; appearance: none; -webkit-appearance: none;
+        }
+        .form-group select { background: white url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23666' d='M6 8L1 3h10z'/%3E%3C/svg%3E") no-repeat right 14px center; padding-right: 36px; cursor: pointer; }
+        .form-group input:focus, .form-group select:focus { border-color: #0056b3; box-shadow: 0 0 0 3px rgba(0,86,179,0.1); }
+
+        .confirm-btn {
+            display: block; width: 100%; padding: 13px; background-color: #28a745; color: white;
+            border: none; border-radius: 8px; font-size: 15px; font-weight: 600; cursor: pointer;
+            font-family: 'Inter', sans-serif; transition: background-color 0.2s;
+        }
+        .confirm-btn:hover { background-color: #218838; }
+
+        .error-msg {
+            color: #842029; background-color: #f8d7da; border: 1px solid #f5c2c7;
+            padding: 12px 16px; border-radius: 8px; margin-bottom: 24px; text-align: center;
+            font-size: 14px; font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <h1>Train Reservation System</h1>
+    <a href="/home" class="back-btn">&larr; Back to Trains</a>
+</div>
+
+<div class="container">
+    <h2>Book Your Ticket</h2>
+    <div class="subtitle">Fill in the details below to confirm your reservation</div>
+
+    {{#error}}
+    <div class="error-msg">Not enough seats available or invalid input. Please try again.</div>
+    {{/error}}
+
+    <form action="/book" method="post">
+        <input type="hidden" name="trainNumber" value="{{trainNumber}}">
+
+        <div class="form-group">
+            <label for="numberOfSeats">Number of Seats</label>
+            <input type="number" id="numberOfSeats" name="numberOfSeats" min="1" max="10" value="1" required>
+        </div>
+
+        <div class="form-group">
+            <label for="travelClass">Travelling Class</label>
+            <select id="travelClass" name="travelClass" required>
+                <option value="Sleeper (SL)">Sleeper (SL)</option>
+                <option value="Third AC (3A)">Third AC (3A)</option>
+                <option value="Second AC (2A)">Second AC (2A)</option>
+                <option value="First AC (1A)">First AC (1A)</option>
+                <option value="Second Seating (2S)">Second Seating (2S)</option>
+            </select>
+        </div>
+
+        <button type="submit" class="confirm-btn">Confirm Booking</button>
+    </form>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Tickets - Train Reservation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background-color: #f0f2f5; margin: 0; padding: 0; }
+
+        /* Navbar */
+        .navbar { background-color: #0056b3; color: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .navbar h1 { margin: 0; font-size: 22px; font-weight: 600; letter-spacing: -0.3px; }
+        .back-btn { color: white; text-decoration: none; font-weight: 500; font-size: 14px; background: rgba(255,255,255,0.15); padding: 8px 16px; border-radius: 6px; transition: background 0.2s; }
+        .back-btn:hover { background: rgba(255,255,255,0.25); }
+
+        /* Main Container */
+        .container { max-width: 900px; margin: 30px auto; padding: 0 20px; }
+
+        /* Page heading */
+        .page-title { color: #1a1a2e; font-size: 20px; font-weight: 600; margin-bottom: 20px; }
+
+        /* Search Form */
+        .search-box {
+            background: white; padding: 20px 24px; border-radius: 10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+            margin-bottom: 24px; display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap;
+        }
+        .form-group { flex: 1; min-width: 200px; }
+        .form-group label { display: block; margin-bottom: 6px; color: #555; font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.4px; }
+        .form-group input {
+            width: 100%; padding: 10px 14px; border: 1.5px solid #dde1e7; border-radius: 8px;
+            font-size: 15px; font-family: 'Inter', sans-serif; outline: none; color: #333;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group input:focus { border-color: #0056b3; box-shadow: 0 0 0 3px rgba(0,86,179,0.1); }
+        .search-btn {
+            padding: 10px 20px; background-color: #0056b3; color: white; border: none; border-radius: 8px;
+            font-size: 14px; font-weight: 600; cursor: pointer; height: 42px; font-family: 'Inter', sans-serif;
+            transition: background-color 0.2s;
+        }
+        .search-btn:hover { background-color: #004494; }
+        .reset-btn {
+            padding: 10px 20px; background-color: #e9ecef; color: #495057; text-decoration: none; border-radius: 8px;
+            font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; height: 42px;
+            transition: background-color 0.2s;
+        }
+        .reset-btn:hover { background-color: #dee2e6; }
+
+        .error-msg { color: #842029; font-weight: 500; font-size: 14px; width: 100%; margin-top: 8px; }
+
+        /* Tickets Table */
+        .tickets-table {
+            width: 100%; border-collapse: separate; border-spacing: 0; background: white;
+            border-radius: 10px; overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+        }
+        .tickets-table th, .tickets-table td { padding: 14px 18px; text-align: left; }
+        .tickets-table th { background-color: #f8f9fa; color: #555; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 2px solid #eee; }
+        .tickets-table td { color: #333; font-size: 14px; border-bottom: 1px solid #f0f0f0; }
+        .tickets-table tr:last-child td { border-bottom: none; }
+        .tickets-table tbody tr { transition: background-color 0.15s; }
+        .tickets-table tbody tr:hover { background-color: #f8fafc; }
+
+        .pnr-badge { background-color: #e8f4fd; color: #0056b3; padding: 5px 10px; border-radius: 6px; font-weight: 600; font-size: 13px; letter-spacing: 0.5px; display: inline-block; }
+        .class-badge { background-color: #f0f0f0; color: #555; padding: 4px 10px; border-radius: 6px; font-size: 13px; font-weight: 500; display: inline-block; }
+        .view-btn {
+            background-color: #0056b3; color: white; text-decoration: none; padding: 7px 16px; border-radius: 6px;
+            font-size: 13px; font-weight: 600; transition: background-color 0.2s; display: inline-block;
+        }
+        .view-btn:hover { background-color: #004494; }
+
+        .no-results {
+            text-align: center; color: #888; font-size: 16px; padding: 50px 20px; background: white;
+            border-radius: 10px; box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+        }
+        .no-results span { display: block; font-size: 40px; margin-bottom: 12px; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <h1>Train Reservation System</h1>
+    <a href="/home" class="back-btn">&larr; Back to Home</a>
+</div>
+
+<div class="container">
+    <div class="page-title">My Tickets</div>
+
+    <form class="search-box" action="/dashboard" method="get">
+        <div class="form-group">
+            <label for="pnr">Search by PNR</label>
+            <input type="text" id="pnr" name="pnr" value="{{#searchPnr}}{{searchPnr}}{{/searchPnr}}" placeholder="e.g. A1B2C3D4">
+        </div>
+        <button type="submit" class="search-btn">Search</button>
+        <a href="/dashboard" class="reset-btn">Clear</a>
+    </form>
+
+    {{#searchError}}<div class="error-msg">{{searchError}}</div>{{/searchError}}
+
+    {{#tickets.0}}
+    <table class="tickets-table">
+        <thead>
+            <tr>
+                <th>PNR</th>
+                <th>Train No.</th>
+                <th>Seats</th>
+                <th>Class</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#tickets}}
+            <tr>
+                <td><span class="pnr-badge">{{pnr}}</span></td>
+                <td>#{{trainNumber}}</td>
+                <td>{{numberOfSeats}}</td>
+                <td><span class="class-badge">{{travelClass}}</span></td>
+                <td><a href="/ticket/{{pnr}}" class="view-btn">View</a></td>
+            </tr>
+            {{/tickets}}
+        </tbody>
+    </table>
+    {{/tickets.0}}
+
+    {{^tickets.0}}
+        {{^searchError}}
+        <div class="no-results">
+            <span>🎫</span>
+            No tickets booked yet. Head over to the home page to find trains.
+        </div>
+        {{/searchError}}
+    {{/tickets.0}}
+</div>
+
+</body>
+</html>
